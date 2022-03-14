@@ -1,0 +1,21 @@
+{
+  "name": "kart",
+  "version": "1.0.0",
+  "description": "A kart racer for the browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc && webpack --config webpack.config.js",
+    "start-dev": "NODE_ENV=development npm run start"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
