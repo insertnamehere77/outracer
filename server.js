@@ -5,6 +5,7 @@ const app = express();
 
 // Serves the contents of /dist as static files so index.html can import them
 app.use(express.static('./dist', { extensions: ['js'] }));
+app.use(express.static('./public', { extensions: ['png'] }));
 
 // Returns index.html no matter the url path
 app.get('*', (_req, res) => {
