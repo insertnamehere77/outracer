@@ -1,4 +1,6 @@
 import Entity from "./Entity";
-import PlaneEntity from "./PlaneEntity";
+import GroundEntity from "./GroundEntity";
+import KartEntity from "./KartEntity";
+import CameraEntity from "./CameraEntity";
 
-export { Entity, PlaneEntity };
+export { Entity, GroundEntity, KartEntity, CameraEntity };

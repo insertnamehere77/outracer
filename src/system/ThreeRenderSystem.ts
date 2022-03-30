@@ -1,5 +1,5 @@
 import System from './System';
-import { PlaneRenderComponent } from '../component';
+import { CameraComponent, PlaneRenderComponent } from '../component';
 import { ComponentManager } from '../scene';
 
 import * as THREE from 'three';
@@ -9,19 +9,13 @@ const VIEW_HEIGHT = 400;
 const VIEW_WIDTH = 600;
 
 class ThreeRenderSystem implements System {
-    camera: THREE.Camera;
     scene: THREE.Scene;
     renderer: THREE.Renderer;
 
     planeRenderComponents: Map<number, PlaneRenderComponent> | undefined;
+    cameraComponent: CameraComponent | undefined;
 
     constructor() {
-        this.camera =
-            new THREE.PerspectiveCamera(70, VIEW_WIDTH / VIEW_HEIGHT, 0.01, 10);
-        this.camera.position.z = 1;
-        this.camera.position.y = 1;
-
-        this.camera.lookAt(0, 0, 0);
         this.scene = new THREE.Scene();
 
         const light = new THREE.AmbientLight(0x404040);
@@ -43,10 +37,25 @@ class ThreeRenderSystem implements System {
         for (const [_id, component] of this.planeRenderComponents) {
             this.scene.add(component.mesh);
         }
+
+        //TODO: This should only ever have one camera
+        const cameraComponents = componentManager.getComponents(CameraComponent);
+        for (const [_id, component] of cameraComponents) {
+            this.cameraComponent = component;
+        }
     }
 
     update(timeDelta: number) {
-        this.renderer.render(this.scene, this.camera);
+        if (!this.planeRenderComponents || !this.cameraComponent) {
+            console.warn('Render system didnt register its components');
+            return;
+        }
+        this.renderer.render(this.scene, this.cameraComponent.camera);
+    }
+
+    getUpdatePriority(): number {
+        //We always want to render after everything else updates
+        return Number.NEGATIVE_INFINITY;
     }
 
 };

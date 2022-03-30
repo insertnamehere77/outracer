@@ -1,28 +1,32 @@
-import { PlaneEntity } from "./entity";
+import { KartEntity, GroundEntity, CameraEntity } from "./entity";
 import { Scene } from "./scene";
-import { ThreeRenderSystem } from "./system";
+import { InputSystem, ThreeRenderSystem, DriveSystem } from "./system";
 
 const carSrc = "./testarosa.png";
 const grassSrc = "./grass.jpg";
 
 function main() {
-    const carEntity = new PlaneEntity(carSrc, 1);
+    const carEntity = new KartEntity(carSrc, 1);
     carEntity.planeRenderComponent.mesh.translateY(0.35);
 
-    const grassEntity = new PlaneEntity(grassSrc, 5);
+    const grassEntity = new GroundEntity(grassSrc, 10);
     grassEntity.planeRenderComponent.mesh.rotateX(-Math.PI / 2);
 
-    const testScene = new Scene();
-    testScene.addEntity(carEntity);
-    testScene.addEntity(grassEntity);
+    const cameraEntity = new CameraEntity();
 
-    const testSystem = new ThreeRenderSystem();
-    testScene.addSystem(testSystem);
+    const gameScene = new Scene();
+    gameScene.addEntities(carEntity, grassEntity, cameraEntity);
 
-    testScene.update();
-    setInterval(() => {
-        testScene.update();
-    }, 1000);
+    const renderSystem = new ThreeRenderSystem();
+    const inputSystem = new InputSystem();
+    const driveSystem = new DriveSystem();
+    gameScene.addSystems(renderSystem, inputSystem, driveSystem);
+
+    const animate = () => {
+        gameScene.update();
+        requestAnimationFrame(animate);
+    }
+    animate();
 };
 
 main();

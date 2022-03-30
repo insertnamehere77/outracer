@@ -22,10 +22,44 @@ class Scene {
         this.componentManager.addEntity(entity);
     }
 
+    addEntities(...entities: Entity[]) {
+        for (const entity of entities) {
+            this.addEntity(entity);
+        }
+    }
+
 
     addSystem(system: System) {
         this.systems.push(system);
         system.registerComponents(this.componentManager);
+        this.sortSystems();
+    }
+
+    addSystems(...systems: System[]) {
+        for (const system of systems) {
+            this.systems.push(system);
+            system.registerComponents(this.componentManager);
+        }
+        this.sortSystems();
+    }
+
+    //TODO: Consider swapping out this.systems to use an Array implementation that always maintains it's sort order internally
+    private sortSystems() {
+        //Higher priority number updates first
+        this.systems.sort((sysA: System, sysB: System) => {
+            const priorityA = sysA.getUpdatePriority();
+            const priorityB = sysB.getUpdatePriority();
+
+            if (priorityA > priorityB) {
+                return -1;
+            }
+
+            if (priorityA < priorityB) {
+                return 1;
+            }
+
+            return 0;
+        });
     }
 
 
