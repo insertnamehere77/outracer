@@ -14,19 +14,19 @@ class DriveSystem implements System {
 
     controllerComponents: Map<number, ControllerComponent>;
     planeRenderComponents: Map<number, PlaneRenderComponent>;
-    cameraComponent: CameraComponent | undefined;
+    cameraComponent: CameraComponent;
 
     constructor() {
         this.controllerComponents = new Map();
         this.planeRenderComponents = new Map();
+        this.cameraComponent = new CameraComponent(-1);
     }
 
     registerComponents(componentManager: ComponentManager) {
         this.controllerComponents = componentManager.getComponents(ControllerComponent);
         this.planeRenderComponents = componentManager.getComponents(PlaneRenderComponent);
 
-        const cameraComponents = componentManager.getComponents(CameraComponent);
-        cameraComponents.forEach(camera => this.cameraComponent = camera);
+        this.cameraComponent = componentManager.getComponent(CameraComponent);
     }
 
     private updateCar(timeDelta: number, controller: ControllerComponent, render: PlaneRenderComponent) {
@@ -45,20 +45,33 @@ class DriveSystem implements System {
         render.mesh.translateZ(-distanceDelta);
 
 
+        const isMoving = controller.currentSpeed > 0;
+        const isTurningLeft = commands.has(ControllerCommands.TURN_LEFT);
+        const isTurningRight = commands.has(ControllerCommands.TURN_RIGHT);
+        const isTurning = ((+isTurningLeft) + (+isTurningRight)) === 1;
+
+        if (isMoving && isTurning) {
+            const turnMultiplier = isTurningRight ? 1 : -1;
+            const speedRatio = controller.currentSpeed / controller.topSpeed;
+            const turnDist = timeDeltaSeconds * controller.turnRadius * turnMultiplier * speedRatio;
+            render.mesh.translateX(turnDist);
+        }
+
+
 
     }
 
     update(timeDelta: number) {
         this.controllerComponents.forEach(controller => {
             const render = this.planeRenderComponents.get(controller.id);
-            // console.log('drivin', controller, render);
             if (!render) {
                 return;
             }
             this.updateCar(timeDelta, controller, render);
-            if (this.cameraComponent) {
-                this.cameraComponent.camera.position.setZ(render.mesh.position.z + 1);
-            }
+
+            this.cameraComponent.camera.position.setZ(render.mesh.position.z + 1);
+            this.cameraComponent.camera.position.setX(render.mesh.position.x);
+
 
         });
 

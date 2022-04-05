@@ -23,13 +23,10 @@ class InputSystem implements System {
 
     private handleKeydown(event: KeyboardEvent) {
         this.activeKeys.add(event.code);
-        console.log(event);
-        console.log(InputSystem.keyToCommandMap);
     }
 
     private handleKeyup(event: KeyboardEvent) {
         this.activeKeys.delete(event.code);
-        console.log(event);
     }
 
     private getActiveCommands(): Set<ControllerCommands> {

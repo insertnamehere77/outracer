@@ -2,6 +2,7 @@ import Component from "./Component";
 import * as THREE from 'three';
 
 class PlaneRenderComponent extends Component {
+    static componentType: string = 'PlaneRenderComponent';
     texture: THREE.Texture;
     geometry: THREE.PlaneGeometry;
     material: THREE.Material;

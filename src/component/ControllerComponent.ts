@@ -2,6 +2,7 @@ import Component from "./Component";
 import { ControllerCommands } from "../enums";
 
 class ControllerComponent extends Component {
+    static componentType: string = 'ControllerComponent';
     commands: Set<ControllerCommands>;
     acceleration: number;
     deceleration: number;
