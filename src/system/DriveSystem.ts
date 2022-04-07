@@ -1,4 +1,4 @@
-import { CameraComponent, ControllerComponent, PlaneRenderComponent } from "../component";
+import { CameraComponent, ControllerComponent, LifeComponent, PlaneRenderComponent } from "../component";
 import { ControllerCommands } from "../enums";
 import { ComponentManager } from "../scene";
 import System from "./System";
@@ -14,17 +14,20 @@ class DriveSystem implements System {
 
     controllerComponents: Map<number, ControllerComponent>;
     planeRenderComponents: Map<number, PlaneRenderComponent>;
+    lifeComponents: Map<number, LifeComponent>;
     cameraComponent: CameraComponent;
 
     constructor() {
         this.controllerComponents = new Map();
         this.planeRenderComponents = new Map();
+        this.lifeComponents = new Map();
         this.cameraComponent = new CameraComponent(-1);
     }
 
     registerComponents(componentManager: ComponentManager) {
         this.controllerComponents = componentManager.getComponents(ControllerComponent);
         this.planeRenderComponents = componentManager.getComponents(PlaneRenderComponent);
+        this.lifeComponents = componentManager.getComponents(LifeComponent);
 
         this.cameraComponent = componentManager.getComponent(CameraComponent);
     }
@@ -63,6 +66,12 @@ class DriveSystem implements System {
 
     update(timeDelta: number) {
         this.controllerComponents.forEach(controller => {
+
+            const life = this.lifeComponents.get(controller.id);
+            if (!life || !life.isAlive()) {
+                return;
+            }
+
             const render = this.planeRenderComponents.get(controller.id);
             if (!render) {
                 return;

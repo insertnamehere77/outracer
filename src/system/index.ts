@@ -3,5 +3,7 @@ import ThreeRenderSystem from "./ThreeRenderSystem";
 import InputSystem from "./InputSystem";
 import DriveSystem from "./DriveSystem";
 import TerrainSystem from "./TerrainSystem";
+import CollisionSystem from "./CollisionSystem";
+import RespawnSystem from "./RespawnSystem";
 
-export { System, ThreeRenderSystem, InputSystem, DriveSystem, TerrainSystem };
+export { System, ThreeRenderSystem, InputSystem, DriveSystem, TerrainSystem, CollisionSystem, RespawnSystem };
