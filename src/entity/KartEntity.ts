@@ -11,9 +11,9 @@ class KartEntity extends Entity {
     constructor(width: number, height: number = width) {
         super();
         this.lifeComponent = new LifeComponent(this.id, LifeStatus.ALIVE, "./testarosa.png", "./explosion.jpeg");
-        this.planeRenderComponent = new PlaneRenderComponent(this.id, this.lifeComponent.aliveTexture, width, height);
-        this.planeRenderComponent.mesh.position.y += 0.35;
-        this.planeRenderComponent.mesh.renderOrder = 1;
+        this.planeRenderComponent = new PlaneRenderComponent(this.id, this.lifeComponent.aliveTexture, width, height);;
+        this.planeRenderComponent.translateWorldY(0.35);
+        this.planeRenderComponent.setRenderOrder(1);
         this.controllerComponent = new ControllerComponent(this.id);
 
         this.collisionComponent = new CollisionComponent(this.id, width);

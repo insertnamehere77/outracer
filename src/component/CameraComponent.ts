@@ -15,7 +15,7 @@ class CameraComponent extends Component {
         this.camera.position.z = 1;
         this.camera.position.y = 0.75;
 
-        this.camera.lookAt(0, 0, 0);
+        this.camera.lookAt(0, 0.5, 0);
     }
 
     //This will only work for the "behind-the-back always moving forward" sprite scaling games

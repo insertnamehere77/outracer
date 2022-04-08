@@ -25,6 +25,22 @@ class PlaneRenderComponent extends Component {
         this.material.transparent = true;
         this.material.needsUpdate = true;
     }
+
+    translateWorldX(diff: number) {
+        this.mesh.position.x += diff;
+    }
+
+    translateWorldY(diff: number) {
+        this.mesh.position.y += diff;
+    }
+
+    translateWorldZ(diff: number) {
+        this.mesh.position.z += diff;
+    }
+
+    setRenderOrder(order: number) {
+        this.mesh.renderOrder = order;
+    }
 }
 
 export default PlaneRenderComponent;
