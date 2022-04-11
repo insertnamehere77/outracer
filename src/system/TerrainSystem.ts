@@ -62,14 +62,18 @@ class TerrainSystem implements System {
     private calcSceneryLength(): number {
         const zValues = [...this.sceneryComponents.values()].map(scenery => {
             const render = this.planeRenderComponents.get(scenery.id);
-            return render && render.getPosition().z;
+            return render && Math.abs(render.getPosition().z);
         })
             .filter(position => position !== undefined) as number[];
 
         const zMin = Math.min(...zValues);
         const zMax = Math.max(...zValues);
 
-        return zMax - zMin;
+        const sceneryLength = zMax - zMin;
+        const numTreePairs = zValues.length / 2;
+        const distBetween = sceneryLength / (numTreePairs - 1);
+
+        return sceneryLength + distBetween;
     }
 
     private getUnseenScenery(): PlaneRenderComponent[] {

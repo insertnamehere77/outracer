@@ -38,6 +38,18 @@ class PlaneRenderComponent extends Component {
         this.mesh.position.z += diff;
     }
 
+    setWorldX(diff: number) {
+        this.mesh.position.x = diff;
+    }
+
+    setWorldY(diff: number) {
+        this.mesh.position.y = diff;
+    }
+
+    setWorldZ(diff: number) {
+        this.mesh.position.z = diff;
+    }
+
     setRenderOrder(order: number) {
         this.mesh.renderOrder = order;
     }

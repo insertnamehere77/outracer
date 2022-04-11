@@ -6,6 +6,7 @@ import GroundComponent from "./GroundComponent";
 import CollisionComponent from "./CollisionComponent";
 import LifeComponent from "./LifeComponent";
 import SceneryComponent from "./SceneryComponent";
+import TrafficComponent from "./TrafficComponent";
 
 export {
     Component,
@@ -15,5 +16,6 @@ export {
     GroundComponent,
     CollisionComponent,
     LifeComponent,
-    SceneryComponent
+    SceneryComponent,
+    TrafficComponent
 };
