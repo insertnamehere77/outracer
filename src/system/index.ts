@@ -6,6 +6,7 @@ import TerrainSystem from "./TerrainSystem";
 import CollisionSystem from "./CollisionSystem";
 import RespawnSystem from "./RespawnSystem";
 import TrafficSystem from "./TrafficSystem";
+import ScoreSystem from "./ScoreSystem";
 
 export {
     System,
@@ -15,5 +16,6 @@ export {
     TerrainSystem,
     CollisionSystem,
     RespawnSystem,
-    TrafficSystem
+    TrafficSystem,
+    ScoreSystem
 };

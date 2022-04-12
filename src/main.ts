@@ -1,4 +1,4 @@
-import { KartEntity, GroundEntity, CameraEntity, TreeEntity, TrafficEntity } from "./entity";
+import { KartEntity, GroundEntity, CameraEntity, TreeEntity, TrafficEntity, ScoreEntity } from "./entity";
 import { Scene } from "./scene";
 import { generateRandomNum } from "./util/random";
 import {
@@ -8,7 +8,8 @@ import {
     TerrainSystem,
     CollisionSystem,
     RespawnSystem,
-    TrafficSystem
+    TrafficSystem,
+    ScoreSystem
 } from "./system";
 
 function generateGroundEntities(
@@ -76,12 +77,14 @@ function main() {
     const terrainEntities = generateGroundEntities(5, 10);
     const treeEntities = generateTreeEntities(20, 2, ROAD_WIDTH, 1, 2.5);
     const trafficEntities = generateTrafficEntities(10, 5, TRAFFIC_WIDTH);
+    const scoreEntity = new ScoreEntity();
     const cameraEntity = new CameraEntity();
 
     const gameScene = new Scene();
     gameScene.addEntities(
         carEntity,
         cameraEntity,
+        scoreEntity,
         ...terrainEntities,
         ...treeEntities,
         ...trafficEntities);
@@ -93,6 +96,7 @@ function main() {
     const collisionSystem = new CollisionSystem();
     const respawnSystem = new RespawnSystem();
     const trafficSystem = new TrafficSystem(TRAFFIC_WIDTH);
+    const scoreSystem = new ScoreSystem();
     gameScene.addSystems(
         renderSystem,
         inputSystem,
@@ -100,7 +104,8 @@ function main() {
         terrainSystem,
         collisionSystem,
         respawnSystem,
-        trafficSystem);
+        trafficSystem,
+        scoreSystem);
 
     const animate = () => {
         gameScene.update();

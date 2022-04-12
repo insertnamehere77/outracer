@@ -4,5 +4,6 @@ import KartEntity from "./KartEntity";
 import CameraEntity from "./CameraEntity";
 import TreeEntity from "./TreeEntity";
 import TrafficEntity from "./TrafficEntity";
+import ScoreEntity from "./ScoreEntity";
 
-export { Entity, GroundEntity, KartEntity, CameraEntity, TreeEntity, TrafficEntity };
+export { Entity, GroundEntity, KartEntity, CameraEntity, TreeEntity, TrafficEntity, ScoreEntity };

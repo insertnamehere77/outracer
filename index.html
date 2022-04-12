@@ -1,4 +1,20 @@
 <body>
-    <canvas id="canvas"></canvas>
+    <div class="gameContainer">
+        <div id="scoreBoard" class="scoreBoard"></div>
+        <canvas id="canvas">
+        </canvas>
+    </div>
     <script type="module" src="./bundle.js"></script>
+    <style>
+        .gameContainer {
+            position: relative;
+        }
+
+        .scoreBoard {
+            background-color: aqua;
+            color: white;
+            z-index: 100;
+            position: absolute;
+        }
+    </style>
 </body>

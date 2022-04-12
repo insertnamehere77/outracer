@@ -1,4 +1,4 @@
-import { CameraComponent, PlaneRenderComponent, TrafficComponent } from "../component";
+import { CameraComponent, PlaneRenderComponent, ScoreComponent, TrafficComponent } from "../component";
 import { ComponentManager } from "../scene";
 import { generateRandomNum } from "../util/random";
 import System from "./System";
@@ -7,6 +7,7 @@ class TrafficSystem implements System {
     trafficComponents: Map<number, TrafficComponent>;
     planeRenderComponents: Map<number, PlaneRenderComponent>;
     cameraComponent: CameraComponent;
+    scoreComponent: ScoreComponent;
 
     trafficLength: number;
     trafficWidth: number;
@@ -15,6 +16,7 @@ class TrafficSystem implements System {
         this.trafficComponents = new Map();
         this.planeRenderComponents = new Map();
         this.cameraComponent = new CameraComponent(-1);
+        this.scoreComponent = new ScoreComponent(-1);
         this.trafficLength = 0;
         this.trafficWidth = trafficWidth;
     }
@@ -23,6 +25,7 @@ class TrafficSystem implements System {
         this.trafficComponents = componentManager.getComponents(TrafficComponent);
         this.planeRenderComponents = componentManager.getComponents(PlaneRenderComponent);
         this.cameraComponent = componentManager.getComponent(CameraComponent);
+        this.scoreComponent = componentManager.getComponent(ScoreComponent);
         this.trafficLength = this.calcTrafficLength();
     }
 
@@ -66,6 +69,8 @@ class TrafficSystem implements System {
             render.translateWorldZ(-this.trafficLength);
             const xOffset = generateRandomNum(-this.trafficWidth, this.trafficWidth);
             render.setWorldX(xOffset);
+
+            this.scoreComponent.increase(100);
         });
     }
 
