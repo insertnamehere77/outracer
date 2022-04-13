@@ -75,7 +75,7 @@ const TRAFFIC_WIDTH = ROAD_WIDTH * 0.75;
 function main() {
     const carEntity = new KartEntity(0.75, 0.75);
     const terrainEntities = generateGroundEntities(5, 10);
-    const treeEntities = generateTreeEntities(20, 2, ROAD_WIDTH, 1, 2.5);
+    const treeEntities = generateTreeEntities(20, 2, ROAD_WIDTH, 1, 3);
     const trafficEntities = generateTrafficEntities(10, 5, TRAFFIC_WIDTH);
     const scoreEntity = new ScoreEntity();
     const cameraEntity = new CameraEntity();

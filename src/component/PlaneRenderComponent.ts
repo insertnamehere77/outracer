@@ -11,6 +11,7 @@ class PlaneRenderComponent extends Component {
     constructor(id: number, texture: THREE.Texture, width: number, height: number) {
         super(id);
         this.texture = texture;
+        this.texture.magFilter = THREE.NearestFilter;
         this.geometry = new THREE.PlaneGeometry(width, height);
         this.material = new THREE.MeshBasicMaterial({ map: this.texture, transparent: true });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -22,6 +23,7 @@ class PlaneRenderComponent extends Component {
 
     setTexture(texture: THREE.Texture) {
         this.material.map = texture;
+        texture.magFilter = THREE.NearestFilter;
         this.material.transparent = true;
         this.material.needsUpdate = true;
     }

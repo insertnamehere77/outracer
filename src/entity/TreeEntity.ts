@@ -3,7 +3,7 @@ import { PlaneRenderComponent, CollisionComponent, SceneryComponent } from "../c
 import { TextureLoader, Texture } from "three";
 
 class TreeEntity extends Entity {
-    static texture: Texture = new TextureLoader().load("./tree.png");
+    static texture: Texture = new TextureLoader().load("./palm.png");
 
     planeRenderComponent: PlaneRenderComponent;
     collisionComponent: CollisionComponent;
@@ -12,7 +12,7 @@ class TreeEntity extends Entity {
     constructor(width: number, height: number = width) {
         super();
         this.planeRenderComponent = new PlaneRenderComponent(this.id, TreeEntity.texture, width, height);
-        this.planeRenderComponent.translateWorldY(0.35);
+        this.planeRenderComponent.translateWorldY(1.5);
         this.planeRenderComponent.setRenderOrder(1);
 
 
