@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { PerspectiveCamera, Vector3 } from 'three';
 import Component from "./Component";
 
 
@@ -11,7 +11,7 @@ class CameraComponent extends Component {
         super(id);
 
         this.camera =
-            new THREE.PerspectiveCamera(60, VIEW_WIDTH / VIEW_HEIGHT, 0.01, 40);
+            new PerspectiveCamera(60, VIEW_WIDTH / VIEW_HEIGHT, 0.01, 40);
         this.camera.position.z = 1;
         this.camera.position.y = 0.75;
 
@@ -21,7 +21,7 @@ class CameraComponent extends Component {
     //This will only work for the "behind-the-back always moving forward" sprite scaling games
     //It should be sufficient (and efficient) for my usecase
     //But if anything more sophisticated is needed, this will need to be re-written
-    canSee(pos: THREE.Vector3): boolean {
+    canSee(pos: Vector3): boolean {
         return this.camera.position.z > pos.z;
     }
 }
