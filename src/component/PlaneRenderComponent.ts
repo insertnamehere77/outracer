@@ -1,29 +1,30 @@
 import Component from "./Component";
-import * as THREE from 'three';
+import { NearestFilter, Texture, PlaneGeometry, MeshBasicMaterial, Mesh, MeshLambertMaterial, Vector3, MeshPhongMaterial } from "three";
 
 class PlaneRenderComponent extends Component {
     static componentType: string = 'PlaneRenderComponent';
-    texture: THREE.Texture;
-    geometry: THREE.PlaneGeometry;
-    material: THREE.MeshBasicMaterial;
-    mesh: THREE.Mesh;
+    texture: Texture;
+    geometry: PlaneGeometry;
+    material: MeshBasicMaterial;
+    mesh: Mesh;
 
-    constructor(id: number, texture: THREE.Texture, width: number, height: number) {
+    constructor(id: number, texture: Texture, width: number, height: number) {
         super(id);
         this.texture = texture;
-        this.texture.magFilter = THREE.NearestFilter;
-        this.geometry = new THREE.PlaneGeometry(width, height);
-        this.material = new THREE.MeshBasicMaterial({ map: this.texture, transparent: true });
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.texture.magFilter = NearestFilter;
+        this.texture.minFilter = NearestFilter;
+        this.geometry = new PlaneGeometry(width, height);
+        this.material = new MeshBasicMaterial({ map: this.texture, transparent: true });
+        this.mesh = new Mesh(this.geometry, this.material);
     }
 
-    getPosition(): THREE.Vector3 {
+    getPosition(): Vector3 {
         return this.mesh.position;
     }
 
-    setTexture(texture: THREE.Texture) {
+    setTexture(texture: Texture) {
         this.material.map = texture;
-        texture.magFilter = THREE.NearestFilter;
+        texture.magFilter = NearestFilter;
         this.material.transparent = true;
         this.material.needsUpdate = true;
     }

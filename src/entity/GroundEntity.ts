@@ -1,16 +1,17 @@
 import Entity from "./Entity";
 import { PlaneRenderComponent, GroundComponent } from "../component";
-import { Texture, TextureLoader } from "three";
+import { Texture, TextureLoader, Vector2, RepeatWrapping } from "three";
 
+const LAYER_DIFF = -0.1;
 class GroundEntity extends Entity {
-    static texture: Texture = new TextureLoader().load("grass.jpg");
     planeRenderComponent: PlaneRenderComponent;
     groundComponent: GroundComponent;
-    constructor(width: number, height: number = width) {
+    constructor(texture: Texture, layer: number, width: number, height: number = width) {
         super();
-        this.planeRenderComponent = new PlaneRenderComponent(this.id, GroundEntity.texture, width, height);
+        this.planeRenderComponent = new PlaneRenderComponent(this.id, texture, width, height);
         this.planeRenderComponent.mesh.rotateX(-Math.PI / 2);
-        this.groundComponent = new GroundComponent(this.id, width, height);
+        this.planeRenderComponent.setWorldY(layer * LAYER_DIFF);
+        this.groundComponent = new GroundComponent(this.id, layer, width, height);
     }
 }
 

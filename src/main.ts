@@ -11,15 +11,27 @@ import {
     TrafficSystem,
     ScoreSystem
 } from "./system";
+import { RepeatWrapping, Texture, TextureLoader, Vector2 } from "three";
+
+
+function createRepeatingTexture(srcPath: string, horizRepeat: number, vertRepeat: number): Texture {
+    const texture = new TextureLoader().load(srcPath);
+    texture.repeat = new Vector2(horizRepeat, vertRepeat);
+    texture.wrapT = RepeatWrapping;
+    texture.wrapS = RepeatWrapping;
+    return texture;
+}
+
 
 function generateGroundEntities(
+    terrainTexture: Texture,
+    layer: number,
     numEntities: number,
     width: number,
     height: number = width): GroundEntity[] {
-
     const terrains: GroundEntity[] = [];
     for (let i = 0; i < numEntities; i++) {
-        const ground = new GroundEntity(width, height);
+        const ground = new GroundEntity(terrainTexture, layer, width, height);
         ground.planeRenderComponent.mesh.position.z -= (height * i);
         terrains.push(ground);
     }
@@ -74,7 +86,10 @@ const TRAFFIC_WIDTH = ROAD_WIDTH * 0.75;
 
 function main() {
     const carEntity = new KartEntity(0.75, 0.75);
-    const terrainEntities = generateGroundEntities(5, 10);
+    const roadTexture = new TextureLoader().load("./road.png");
+    const roadEntities = generateGroundEntities(roadTexture, 0, 10, 4, 5);
+    const terrainTexture = createRepeatingTexture("sand.jpg", 50, 5);
+    const sandEntities = generateGroundEntities(terrainTexture, 1, 10, 50, 5);
     const treeEntities = generateTreeEntities(20, 2, ROAD_WIDTH, 1, 3);
     const trafficEntities = generateTrafficEntities(10, 5, TRAFFIC_WIDTH);
     const scoreEntity = new ScoreEntity();
@@ -85,7 +100,8 @@ function main() {
         carEntity,
         cameraEntity,
         scoreEntity,
-        ...terrainEntities,
+        ...roadEntities,
+        ...sandEntities,
         ...treeEntities,
         ...trafficEntities);
 

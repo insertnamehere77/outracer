@@ -9,7 +9,7 @@ class TerrainSystem implements System {
     sceneryComponents: Map<number, SceneryComponent>;
     planeRenderComponents: Map<number, PlaneRenderComponent>;
     cameraComponent: CameraComponent;
-    terrainLength: number;
+    terrainLengths: Map<number, number>;
     sceneryLength: number;
 
     constructor() {
@@ -17,7 +17,7 @@ class TerrainSystem implements System {
         this.sceneryComponents = new Map();
         this.planeRenderComponents = new Map();
         this.cameraComponent = new CameraComponent(-1);
-        this.terrainLength = 0;
+        this.terrainLengths = new Map();
         this.sceneryLength = 0;
     }
 
@@ -26,7 +26,7 @@ class TerrainSystem implements System {
         this.sceneryComponents = componentManager.getComponents(SceneryComponent);
         this.planeRenderComponents = componentManager.getComponents(PlaneRenderComponent);
         this.cameraComponent = componentManager.getComponent(CameraComponent);
-        this.terrainLength = this.getTerrainLength();
+        this.terrainLengths = this.calcTerrainLength();
         this.sceneryLength = this.calcSceneryLength();
     }
 
@@ -53,10 +53,14 @@ class TerrainSystem implements System {
         return renderComponents;
     }
 
-    private getTerrainLength(): number {
-        let length = 0;
-        this.groundComponents.forEach((ground: GroundComponent) => length += ground.height);
-        return length;
+    private calcTerrainLength(): Map<number, number> {
+        const lengthMap = new Map<number, number>();
+        this.groundComponents.forEach((ground: GroundComponent) => {
+            let currLength = lengthMap.get(ground.layer) || 0;
+            currLength += ground.height
+            lengthMap.set(ground.layer, currLength);
+        });
+        return lengthMap;
     }
 
     private calcSceneryLength(): number {
@@ -96,8 +100,18 @@ class TerrainSystem implements System {
 
     update(timeDelta: number) {
         const unseenTerrain = this.calcUnseenTerrain();
-        unseenTerrain.forEach((render: PlaneRenderComponent) =>
-            render.translateWorldZ(-this.terrainLength));
+        unseenTerrain.forEach((render: PlaneRenderComponent) => {
+            const ground = this.groundComponents.get(render.id);
+
+            if (!ground) {
+                return
+            }
+            const length = this.terrainLengths.get(ground.layer);
+            if (!length) {
+                return;
+            }
+            render.translateWorldZ(-length);
+        });
 
         const unseenScenery = this.getUnseenScenery();
         unseenScenery.forEach((render: PlaneRenderComponent) =>

@@ -15,10 +15,10 @@ class ControllerComponent extends Component {
         this.commands = new Set();
 
         this.currentSpeed = 0;
-        this.acceleration = 0.6;
-        this.deceleration = -0.5;
-        this.topSpeed = 2;
-        this.turnRadius = 0.5;
+        this.acceleration = 1.2;
+        this.deceleration = -0.75;
+        this.topSpeed = 4;
+        this.turnRadius = 0.75;
     }
 
     setCommands(newCommands: Set<ControllerCommands>) {

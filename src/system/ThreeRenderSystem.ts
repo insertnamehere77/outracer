@@ -18,12 +18,21 @@ class ThreeRenderSystem implements System {
     constructor() {
         this.scene = new THREE.Scene();
 
-        const light = new THREE.AmbientLight(0x404040);
-        this.scene.add(light);
+        const skyPath = "./sky.png";
+        const skyCube = new THREE.CubeTextureLoader().load([
+            skyPath,
+            skyPath,
+            skyPath,
+            skyPath,
+            skyPath,
+            skyPath,
+        ]);
 
 
-        const helper = new THREE.AxesHelper(1);
-        this.scene.add(helper);
+        skyCube.magFilter = THREE.NearestFilter;
+        skyCube.minFilter = THREE.NearestFilter;
+
+        this.scene.background = skyCube;
 
         const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
         this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });

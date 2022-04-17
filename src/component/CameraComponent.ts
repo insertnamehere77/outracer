@@ -11,7 +11,7 @@ class CameraComponent extends Component {
         super(id);
 
         this.camera =
-            new THREE.PerspectiveCamera(70, VIEW_WIDTH / VIEW_HEIGHT, 0.01, 25);
+            new THREE.PerspectiveCamera(60, VIEW_WIDTH / VIEW_HEIGHT, 0.01, 40);
         this.camera.position.z = 1;
         this.camera.position.y = 0.75;
 
