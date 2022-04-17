@@ -1,11 +1,12 @@
 import Entity from "./Entity";
-import { PlaneRenderComponent, CollisionComponent, TrafficComponent } from "../component";
+import { PlaneRenderComponent, CollisionComponent, TrafficComponent, ShadowComponent } from "../component";
 import { TextureLoader } from "three";
 
 class TrafficEntity extends Entity {
     planeRenderComponent: PlaneRenderComponent;
     collisisonComponent: CollisionComponent;
     trafficComponent: TrafficComponent;
+    shadowComponent: ShadowComponent;
 
     constructor(speed: number) {
         super();
@@ -15,6 +16,7 @@ class TrafficEntity extends Entity {
         this.planeRenderComponent.setRenderOrder(1);
         this.collisisonComponent = new CollisionComponent(this.id, 1);
         this.trafficComponent = new TrafficComponent(this.id, speed);
+        this.shadowComponent = new ShadowComponent(this.id, 1, 0.5);
     }
 }
 

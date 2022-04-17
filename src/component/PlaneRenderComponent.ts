@@ -1,21 +1,18 @@
 import Component from "./Component";
-import { NearestFilter, Texture, PlaneGeometry, MeshBasicMaterial, Mesh, MeshLambertMaterial, Vector3, MeshPhongMaterial } from "three";
+import { NearestFilter, Texture, PlaneGeometry, MeshBasicMaterial, Mesh, Vector3 } from "three";
 
 class PlaneRenderComponent extends Component {
     static componentType: string = 'PlaneRenderComponent';
-    texture: Texture;
-    geometry: PlaneGeometry;
     material: MeshBasicMaterial;
     mesh: Mesh;
 
     constructor(id: number, texture: Texture, width: number, height: number) {
         super(id);
-        this.texture = texture;
-        this.texture.magFilter = NearestFilter;
-        this.texture.minFilter = NearestFilter;
-        this.geometry = new PlaneGeometry(width, height);
-        this.material = new MeshBasicMaterial({ map: this.texture, transparent: true });
-        this.mesh = new Mesh(this.geometry, this.material);
+        texture.magFilter = NearestFilter;
+        texture.minFilter = NearestFilter;
+        const geometry = new PlaneGeometry(width, height);
+        this.material = new MeshBasicMaterial({ map: texture, transparent: true });
+        this.mesh = new Mesh(geometry, this.material);
     }
 
     getPosition(): Vector3 {

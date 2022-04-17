@@ -9,7 +9,8 @@ import {
     CollisionSystem,
     RespawnSystem,
     TrafficSystem,
-    ScoreSystem
+    ScoreSystem,
+    ShadowSystem
 } from "./system";
 import { RepeatWrapping, Texture, TextureLoader, Vector2 } from "three";
 
@@ -113,6 +114,7 @@ function main() {
     const respawnSystem = new RespawnSystem();
     const trafficSystem = new TrafficSystem(TRAFFIC_WIDTH);
     const scoreSystem = new ScoreSystem();
+    const shadowSystem = new ShadowSystem();
     gameScene.addSystems(
         renderSystem,
         inputSystem,
@@ -121,7 +123,9 @@ function main() {
         collisionSystem,
         respawnSystem,
         trafficSystem,
-        scoreSystem);
+        scoreSystem,
+        shadowSystem
+    );
 
     const animate = () => {
         gameScene.update();

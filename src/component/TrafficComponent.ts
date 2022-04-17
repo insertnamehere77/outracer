@@ -1,6 +1,7 @@
 import Component from "./Component";
 
 class TrafficComponent extends Component {
+    static componentType: string = 'TrafficComponent';
     currentSpeed: number;
     constructor(id: number, speed: number) {
         super(id);

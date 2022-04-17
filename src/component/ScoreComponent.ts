@@ -1,6 +1,7 @@
 import Component from "./Component";
 
 class ScoreComponent extends Component {
+    static componentType: string = 'ScoreComponent';
     currScore: number;
     constructor(id: number) {
         super(id);

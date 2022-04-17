@@ -7,6 +7,7 @@ import CollisionSystem from "./CollisionSystem";
 import RespawnSystem from "./RespawnSystem";
 import TrafficSystem from "./TrafficSystem";
 import ScoreSystem from "./ScoreSystem";
+import ShadowSystem from "./ShadowSystem";
 
 export {
     System,
@@ -17,5 +18,6 @@ export {
     CollisionSystem,
     RespawnSystem,
     TrafficSystem,
-    ScoreSystem
+    ScoreSystem,
+    ShadowSystem
 };

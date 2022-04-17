@@ -8,6 +8,7 @@ import LifeComponent from "./LifeComponent";
 import SceneryComponent from "./SceneryComponent";
 import TrafficComponent from "./TrafficComponent";
 import ScoreComponent from "./ScoreComponent";
+import ShadowComponent from "./ShadowComponent";
 
 export {
     Component,
@@ -19,5 +20,6 @@ export {
     LifeComponent,
     SceneryComponent,
     TrafficComponent,
-    ScoreComponent
+    ScoreComponent,
+    ShadowComponent
 };

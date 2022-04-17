@@ -1,5 +1,5 @@
 import System from './System';
-import { CameraComponent, PlaneRenderComponent } from '../component';
+import { CameraComponent, PlaneRenderComponent, ShadowComponent } from '../component';
 import { ComponentManager } from '../scene';
 
 import * as THREE from 'three';
@@ -13,7 +13,9 @@ class ThreeRenderSystem implements System {
     renderer: THREE.Renderer;
 
     planeRenderComponents: Map<number, PlaneRenderComponent> | undefined;
+    shadowComponents: Map<number, ShadowComponent>;
     cameraComponent: CameraComponent | undefined;
+
 
     constructor() {
         this.scene = new THREE.Scene();
@@ -37,21 +39,18 @@ class ThreeRenderSystem implements System {
         const canvas = document.querySelector('#canvas') as HTMLCanvasElement;
         this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
         this.renderer.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+
+        this.shadowComponents = new Map();
     }
 
     registerComponents(componentManager: ComponentManager) {
-        this.planeRenderComponents =
-            componentManager.getComponents(PlaneRenderComponent);
+        this.planeRenderComponents = componentManager.getComponents(PlaneRenderComponent);
+        this.planeRenderComponents.forEach(plane => this.scene.add(plane.mesh));
 
-        for (const [_id, component] of this.planeRenderComponents) {
-            this.scene.add(component.mesh);
-        }
+        this.shadowComponents = componentManager.getComponents(ShadowComponent);
+        this.shadowComponents.forEach(shadow => this.scene.add(shadow.mesh));
 
-        //TODO: This should only ever have one camera
-        const cameraComponents = componentManager.getComponents(CameraComponent);
-        for (const [_id, component] of cameraComponents) {
-            this.cameraComponent = component;
-        }
+        this.cameraComponent = componentManager.getComponent(CameraComponent);
     }
 
     update(timeDelta: number) {

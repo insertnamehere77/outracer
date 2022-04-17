@@ -2,7 +2,7 @@ import Entity from "./Entity";
 import { PlaneRenderComponent, GroundComponent } from "../component";
 import { Texture, TextureLoader, Vector2, RepeatWrapping } from "three";
 
-const LAYER_DIFF = -0.1;
+const LAYER_DIFF = -0.01;
 class GroundEntity extends Entity {
     planeRenderComponent: PlaneRenderComponent;
     groundComponent: GroundComponent;

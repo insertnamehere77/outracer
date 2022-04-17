@@ -1,5 +1,5 @@
 import Entity from "./Entity";
-import { PlaneRenderComponent, CollisionComponent, SceneryComponent } from "../component";
+import { PlaneRenderComponent, CollisionComponent, SceneryComponent, ShadowComponent } from "../component";
 import { TextureLoader, Texture } from "three";
 
 class TreeEntity extends Entity {
@@ -8,6 +8,7 @@ class TreeEntity extends Entity {
     planeRenderComponent: PlaneRenderComponent;
     collisionComponent: CollisionComponent;
     sceneryComponent: SceneryComponent;
+    shadowComponent: ShadowComponent;
 
     constructor(width: number, height: number = width) {
         super();
@@ -18,6 +19,8 @@ class TreeEntity extends Entity {
 
         this.collisionComponent = new CollisionComponent(this.id, width);
         this.sceneryComponent = new SceneryComponent(this.id);
+
+        this.shadowComponent = new ShadowComponent(this.id, 1.5, 1.5);
     }
 }
 
