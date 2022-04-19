@@ -10,7 +10,8 @@ import {
     RespawnSystem,
     TrafficSystem,
     ScoreSystem,
-    ShadowSystem
+    ShadowSystem,
+    DemoSystem
 } from "./system";
 import { RepeatWrapping, Texture, TextureLoader, Vector2 } from "three";
 
@@ -84,6 +85,8 @@ function generateTrafficEntities(
 
 const ROAD_WIDTH = 3;
 const TRAFFIC_WIDTH = ROAD_WIDTH * 0.75;
+const MAX_MOBILE_WIDTH = 900;
+const IS_MOBILE = window.innerWidth <= MAX_MOBILE_WIDTH;
 
 function main() {
     const carEntity = new KartEntity(0.75, 0.75);
@@ -106,24 +109,23 @@ function main() {
         ...treeEntities,
         ...trafficEntities);
 
+    const playerSystems = IS_MOBILE ? [new DemoSystem()] : [new InputSystem(), new ScoreSystem()];
     const renderSystem = new ThreeRenderSystem();
-    const inputSystem = new InputSystem();
     const driveSystem = new DriveSystem();
     const terrainSystem = new TerrainSystem();
     const collisionSystem = new CollisionSystem();
     const respawnSystem = new RespawnSystem();
     const trafficSystem = new TrafficSystem(TRAFFIC_WIDTH);
-    const scoreSystem = new ScoreSystem();
+
     const shadowSystem = new ShadowSystem();
     gameScene.addSystems(
+        ...playerSystems,
         renderSystem,
-        inputSystem,
         driveSystem,
         terrainSystem,
         collisionSystem,
         respawnSystem,
         trafficSystem,
-        scoreSystem,
         shadowSystem
     );
 

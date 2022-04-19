@@ -8,6 +8,7 @@ import RespawnSystem from "./RespawnSystem";
 import TrafficSystem from "./TrafficSystem";
 import ScoreSystem from "./ScoreSystem";
 import ShadowSystem from "./ShadowSystem";
+import DemoSystem from "./DemoSystem";
 
 export {
     System,
@@ -19,5 +20,6 @@ export {
     RespawnSystem,
     TrafficSystem,
     ScoreSystem,
-    ShadowSystem
+    ShadowSystem,
+    DemoSystem
 };
