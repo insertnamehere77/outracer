@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 import { CollisionComponent, PlaneRenderComponent } from "../component";
 import { ComponentManager } from "../scene";
 import System from "./System";
@@ -53,15 +53,21 @@ class CollisionSystem implements System {
         this.collisionComponents.forEach(collision => collision.clearCollisions());
     }
 
+    private convertVect3ToVect2(vect3D: Vector3): Vector2 {
+        //Z value becomes the Y value for collision detection all objects basically have the same y value
+        return new Vector2(vect3D.x, vect3D.z);
+    }
 
-    // For now it uses a sphere collision zone
+
+    // For now it uses a 2d circle collision zone
     // This is mainly to better let the player have more "near misses" compared to a rectangular hit box
-    // Like a lot of gameplay code this might need tweaking after playtesting
     private componentsIntersect(
         pos1: Vector3, radius1: number,
         pos2: Vector3, radius2: number): Boolean {
 
-        const currDist = pos1.distanceTo(pos2);
+        const flatPos1 = this.convertVect3ToVect2(pos1);
+        const flatPos2 = this.convertVect3ToVect2(pos2);
+        const currDist = flatPos1.distanceTo(flatPos2);
         const maxDist = (radius1 / 2) + (radius2 / 2);
         return currDist <= maxDist;
     }
