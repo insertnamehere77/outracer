@@ -7,12 +7,14 @@ class ScoreSystem implements System {
     static hiScoreKey = "hiScore";
 
     scoreComponent: ScoreComponent;
-
     highScore: number;
+    prevScore: number;
 
     constructor() {
         this.highScore = this.readHiScore();
+        this.prevScore = 0;
         this.scoreComponent = new ScoreComponent(-1);
+        this.updateScoreBoard();
     }
 
     registerComponents(componentManager: ComponentManager) {
@@ -20,9 +22,24 @@ class ScoreSystem implements System {
     }
 
     update(timeDelta: number) {
-        this.highScore = Math.max(this.scoreComponent.getScore(), this.highScore);
-        this.writeHiScore();
-        ScoreSystem.scoreBoard.innerText = this.getDisplayText();
+        const currentScore = this.scoreComponent.getScore()
+        const newHighScore = Math.max(currentScore, this.highScore);
+        const highScoreNeedsUpdate = newHighScore !== this.highScore;
+        if (highScoreNeedsUpdate) {
+            this.highScore = newHighScore;
+            this.writeHiScore();
+        }
+
+        const currentScoreNeedsUpdate = currentScore !== this.prevScore;
+        if (currentScoreNeedsUpdate) {
+            this.prevScore = currentScore;
+        }
+
+
+        if (highScoreNeedsUpdate || currentScoreNeedsUpdate) {
+            this.updateScoreBoard();
+        }
+
     }
 
     private readHiScore(): number {
@@ -34,8 +51,12 @@ class ScoreSystem implements System {
         window.localStorage.setItem(ScoreSystem.hiScoreKey, this.highScore.toString());
     }
 
+    private updateScoreBoard() {
+        ScoreSystem.scoreBoard.innerText = this.getDisplayText();
+    }
+
     private getDisplayText(): string {
-        return `Hi: ${this.highScore}\nScore: ${this.scoreComponent.getScore()}`;
+        return `HI: ${this.highScore}\nSCORE: ${this.scoreComponent.getScore()}`;
     }
     getUpdatePriority() {
         return 1;
