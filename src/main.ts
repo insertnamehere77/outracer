@@ -85,7 +85,7 @@ function generateTrafficEntities(
 
 const ROAD_WIDTH = 3;
 const TRAFFIC_WIDTH = ROAD_WIDTH * 0.75;
-const MAX_MOBILE_WIDTH = 900;
+const MAX_MOBILE_WIDTH = 1000;
 const IS_MOBILE = window.innerWidth <= MAX_MOBILE_WIDTH;
 
 function main() {
