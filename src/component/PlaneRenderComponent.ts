@@ -53,6 +53,10 @@ class PlaneRenderComponent extends Component {
     setRenderOrder(order: number) {
         this.mesh.renderOrder = order;
     }
+
+    rotateX(radians: number) {
+        this.mesh.rotateX(radians);
+    }
 }
 
 export default PlaneRenderComponent;

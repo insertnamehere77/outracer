@@ -24,6 +24,14 @@ class CameraComponent extends Component {
     canSee(pos: Vector3): boolean {
         return this.camera.position.z > pos.z;
     }
+
+    setWorldZ(z: number) {
+        this.camera.position.setZ(z);
+    }
+
+    setWorldX(x: number) {
+        this.camera.position.setX(x);
+    }
 }
 
 export default CameraComponent;

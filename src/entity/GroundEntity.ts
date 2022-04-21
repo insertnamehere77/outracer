@@ -9,7 +9,7 @@ class GroundEntity extends Entity {
     constructor(texture: Texture, layer: number, width: number, height: number = width) {
         super();
         this.planeRenderComponent = new PlaneRenderComponent(this.id, texture, width, height);
-        this.planeRenderComponent.mesh.rotateX(-Math.PI / 2);
+        this.planeRenderComponent.rotateX(-Math.PI / 2)
         this.planeRenderComponent.setWorldY(layer * LAYER_DIFF);
         this.groundComponent = new GroundComponent(this.id, layer, width, height);
     }

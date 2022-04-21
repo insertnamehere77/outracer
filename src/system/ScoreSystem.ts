@@ -44,7 +44,7 @@ class ScoreSystem implements System {
 
     private readHiScore(): number {
         const scoreStr = window.localStorage.getItem(ScoreSystem.hiScoreKey) || '0';
-        return parseInt(scoreStr);
+        return parseInt(scoreStr) || 0;
     }
 
     private writeHiScore() {

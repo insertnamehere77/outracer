@@ -12,9 +12,9 @@ class ThreeRenderSystem implements System {
     scene: Scene;
     renderer: Renderer;
 
-    planeRenderComponents: Map<number, PlaneRenderComponent> | undefined;
+    planeRenderComponents: Map<number, PlaneRenderComponent>;
     shadowComponents: Map<number, ShadowComponent>;
-    cameraComponent: CameraComponent | undefined;
+    cameraComponent: CameraComponent;
 
 
     constructor() {
@@ -29,8 +29,6 @@ class ThreeRenderSystem implements System {
             skyPath,
             skyPath,
         ]);
-
-
         skyCube.magFilter = NearestFilter;
         skyCube.minFilter = NearestFilter;
 
@@ -41,6 +39,8 @@ class ThreeRenderSystem implements System {
         this.renderer.setSize(VIEW_WIDTH, VIEW_HEIGHT);
 
         this.shadowComponents = new Map();
+        this.planeRenderComponents = new Map();
+        this.cameraComponent = new CameraComponent(-1);
     }
 
     registerComponents(componentManager: ComponentManager) {
@@ -54,10 +54,6 @@ class ThreeRenderSystem implements System {
     }
 
     update(timeDelta: number) {
-        if (!this.planeRenderComponents || !this.cameraComponent) {
-            console.warn('Render system didnt register its components');
-            return;
-        }
         this.renderer.render(this.scene, this.cameraComponent.camera);
     }
 

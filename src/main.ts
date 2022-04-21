@@ -1,4 +1,4 @@
-import { KartEntity, GroundEntity, CameraEntity, TreeEntity, TrafficEntity, ScoreEntity } from "./entity";
+import { KartEntity, GroundEntity, CameraEntity, TreeEntity, TrafficEntity, ScoreEntity, Entity } from "./entity";
 import { Scene } from "./scene";
 import { generateRandomNum } from "./util/random";
 import {
@@ -11,7 +11,8 @@ import {
     TrafficSystem,
     ScoreSystem,
     ShadowSystem,
-    DemoSystem
+    DemoSystem,
+    System
 } from "./system";
 import { RepeatWrapping, Texture, TextureLoader, Vector2 } from "three";
 
@@ -34,7 +35,7 @@ function generateGroundEntities(
     const terrains: GroundEntity[] = [];
     for (let i = 0; i < numEntities; i++) {
         const ground = new GroundEntity(terrainTexture, layer, width, height);
-        ground.planeRenderComponent.mesh.position.z -= (height * i);
+        ground.planeRenderComponent.translateWorldZ(-(height * i));
         terrains.push(ground);
     }
     return terrains;
@@ -85,40 +86,46 @@ function generateTrafficEntities(
 
 const ROAD_WIDTH = 3;
 const TRAFFIC_WIDTH = ROAD_WIDTH * 0.75;
-const MAX_MOBILE_WIDTH = 1000;
-const IS_MOBILE = window.innerWidth <= MAX_MOBILE_WIDTH;
 
-function main() {
+const NUM_TERRAIN = 10;
+const TERRAIN_WIDTH = 50;
+const TERRAIN_LENGTH = 5;
+
+function createEntities(): Entity[] {
     const carEntity = new KartEntity(0.75, 0.75);
     const roadTexture = new TextureLoader().load("./road.png");
-    const roadEntities = generateGroundEntities(roadTexture, 0, 10, 4, 5);
-    const terrainTexture = createRepeatingTexture("sand.jpg", 50, 5);
-    const sandEntities = generateGroundEntities(terrainTexture, 1, 10, 50, 5);
+    const roadEntities = generateGroundEntities(roadTexture, 0, NUM_TERRAIN, 4, TERRAIN_LENGTH);
+    const terrainTexture = createRepeatingTexture("sand.jpg", TERRAIN_WIDTH, TERRAIN_LENGTH);
+    const sandEntities = generateGroundEntities(terrainTexture, 1, NUM_TERRAIN, TERRAIN_WIDTH, TERRAIN_LENGTH);
     const treeEntities = generateTreeEntities(20, 2, ROAD_WIDTH, 1, 3);
     const trafficEntities = generateTrafficEntities(10, 5, TRAFFIC_WIDTH);
     const scoreEntity = new ScoreEntity();
     const cameraEntity = new CameraEntity();
 
-    const gameScene = new Scene();
-    gameScene.addEntities(
+    return [
         carEntity,
         cameraEntity,
         scoreEntity,
         ...roadEntities,
         ...sandEntities,
         ...treeEntities,
-        ...trafficEntities);
+        ...trafficEntities
+    ];
+}
 
-    const playerSystems = IS_MOBILE ? [new DemoSystem()] : [new InputSystem(), new ScoreSystem()];
+
+function createSystems(isMobile: boolean): System[] {
+    //For mobile devices we switch to Demo mode since there aren't mobile controls (yet?)
+    const playerSystems = isMobile ? [new DemoSystem()] : [new InputSystem(), new ScoreSystem()];
     const renderSystem = new ThreeRenderSystem();
     const driveSystem = new DriveSystem();
     const terrainSystem = new TerrainSystem();
     const collisionSystem = new CollisionSystem();
     const respawnSystem = new RespawnSystem();
     const trafficSystem = new TrafficSystem(TRAFFIC_WIDTH);
-
     const shadowSystem = new ShadowSystem();
-    gameScene.addSystems(
+
+    return [
         ...playerSystems,
         renderSystem,
         driveSystem,
@@ -127,7 +134,15 @@ function main() {
         respawnSystem,
         trafficSystem,
         shadowSystem
-    );
+    ];
+}
+
+const MAX_MOBILE_WIDTH = 1000;
+
+function main() {
+    const gameScene = new Scene();
+    gameScene.addEntities(...createEntities());
+    gameScene.addSystems(...createSystems(window.innerWidth <= MAX_MOBILE_WIDTH));
 
     const animate = () => {
         gameScene.update();

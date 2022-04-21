@@ -11,7 +11,7 @@ class Scene {
 
 
     constructor() {
-        this.entities = new Array();
+        this.entities = [];
         this.systems = [];
         this.componentManager = new ComponentManager();
     }

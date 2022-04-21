@@ -45,7 +45,7 @@ class DriveSystem implements System {
 
         controller.currentSpeed = clampNum(controller.currentSpeed + speedDiff, 0, controller.topSpeed);
         const distanceDelta = timeDeltaSeconds * controller.currentSpeed;
-        render.mesh.translateZ(-distanceDelta);
+        render.translateWorldZ(-distanceDelta);
 
 
         const isMoving = controller.currentSpeed > 0;
@@ -57,7 +57,7 @@ class DriveSystem implements System {
             const turnMultiplier = isTurningRight ? 1 : -1;
             const speedRatio = controller.currentSpeed / controller.topSpeed;
             const turnDist = timeDeltaSeconds * controller.turnRadius * turnMultiplier * speedRatio;
-            render.mesh.translateX(turnDist);
+            render.translateWorldX(turnDist);
         }
 
 
@@ -78,10 +78,9 @@ class DriveSystem implements System {
             }
             this.updateCar(timeDelta, controller, render);
 
-            this.cameraComponent.camera.position.setZ(render.mesh.position.z + 1);
-            this.cameraComponent.camera.position.setX(render.mesh.position.x);
-
-
+            const pos = render.getPosition();
+            this.cameraComponent.setWorldZ(pos.z + 1);
+            this.cameraComponent.setWorldX(pos.x);
         });
 
     }
